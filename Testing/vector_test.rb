@@ -16,8 +16,8 @@ class VectorTest < Test::Unit::TestCase
 
   def test_values_initialized_with_scalar
     vector = Vector.new(:scalar => 1, :angle => 90)
-    assert_equal(vector.x, 1)
-    assert_equal(vector.y, 0)
+    assert_equal(vector.x.round(5), 0)
+    assert_equal(vector.y.round(5), 1)
   end
 
   def test_scalar
@@ -48,26 +48,26 @@ class VectorTest < Test::Unit::TestCase
 
   def test_subtract_vectors
     vector = Vector.new(:x => 2, :y => 1)
-    vector_combine = @vector - vector
-    assert_equal(vector_combine.x, 5)
-    assert_equal(vector_combine.y, 5)
-  end
-
-  def test_add_vectors
-    vector = Vector.new(:x => 2, :y => 1)
     vector_diff = @vector - vector
     assert_equal(vector_diff.x, 1)
     assert_equal(vector_diff.y, 3)
   end
 
-  def test_normalize
-    normalized = @vector.normalize
-    assert_equal(normalized.x, 0.6)
-    assert_equal(normalized.y, 0.8)
+  def test_add_vectors
+    vector = Vector.new(:x => 2, :y => 1)
+    vector_combine = @vector + vector
+    assert_equal(vector_combine.x, 5)
+    assert_equal(vector_combine.y, 5)
+  end
+
+  def test_normalized
+    normalized = @vector.normalized
+    assert_equal(normalized.x.round(5), 0.6)
+    assert_equal(normalized.y.round(5), 0.8)
   end
 
   def test_gradient
     gradient = @vector.gradient
-    assert_equal(gradient, 5 / 3.0)
+    assert_equal(gradient, 4 / 3.0)
   end
 end
