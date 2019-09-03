@@ -6,26 +6,34 @@ require_relative '../Core/menu'
 # Tests for the Game class
 class MenuTest < Test::Unit::TestCase
   def setup
-    @menu = Menu.new(%w[Start Exit], 'Normal')
+    @menu = Menu.new(%w[Start Exit], 'Normal', nil)
   end
 
   def test_options_initialized
-    setup
     assert_equal(@menu.options, %w[Start Exit])
   end
 
   def test_title_initialized
-    setup
     assert_equal(@menu.title, 'Normal')
   end
 
   def test_index_initialized
-    setup
     assert_equal(@menu.current_index, 0)
   end
 
   def test_correct_option
-    setup
     assert_equal(@menu.current_option, 'Start')
+  end
+
+  def test_main_menu_initializes
+    menu = MainMenu.new(nil)
+    assert_equal(menu.title, 'Main Menu')
+    assert_equal(menu.options, %w[Start Controls Help About Exit])
+  end
+
+  def test_game_menu_initializes
+    menu = GameMenu.new(nil, nil)
+    assert_equal(menu.title, 'Game Menu')
+    assert_equal(menu.options, %w[Continue Controls Help MainMenu])
   end
 end

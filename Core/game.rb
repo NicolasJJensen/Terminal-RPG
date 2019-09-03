@@ -6,8 +6,10 @@ require 'curses'
 class Game
   attr_reader :window
 
-  def initialize
-    @window = window_setup
+  def initialize(window)
+    @window = window
+    @game_over = false
+    @menu = GameMenu.new(@window, exit_game)
   end
 
   private
@@ -21,5 +23,9 @@ class Game
     win.nodelay = true
     win.keypad = true
     return win
+  end
+
+  def exit_game
+    proc { @game_over = true }
   end
 end
