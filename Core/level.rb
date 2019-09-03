@@ -3,7 +3,7 @@
 require 'curses'
 
 # Class containing logic and all information pertaining to a game
-class Game
+class Level
   def initialize(window)
     @window = window
     @game_over = false
@@ -11,7 +11,7 @@ class Game
   end
 
   def menu_setup
-    @menu = GameMenu.new(@window, exit_game)
+    @menu = GameMenu.new(@window, exit_level)
   end
 
   def run
@@ -89,7 +89,17 @@ class Game
 
   private
 
-  def exit_game
+  def exit_level
     proc { @game_over = true }
+  end
+end
+
+class RandomLevel < Level
+  def initialize
+  end
+end
+
+class CustomLevel < Level
+  def initialize
   end
 end

@@ -58,23 +58,23 @@ class Menu
 end
 
 class MainMenu < Menu
-  def initialize(window)
-    @control_menu = ControlMenu.new(window, [])
-    @level_menu = LevelMenu.new(window, [])
+  def initialize(window, level_menu, control_menu)
+    @level_menu = level_menu
+    @control_menu = control_menu
 
-    super(%w[Start_Game Controls Help More_info Exit], 'Main Menu', window)
+    super(%w[Start_Game Controls Help More_Info Exit], 'Main Menu', window)
   end
 
   def do_option()
     option = @options[@current_index]
     case option
-    when 'Start'
-      @display_menu = false
+    when 'Start_Game'
+      @level_menu.run
     when 'Controls'
       @control_menu.run
     when 'Help'
       show_help
-    when 'About'
+    when 'More_Info'
       show_about
     when 'Exit'
       @display_menu = false
@@ -113,7 +113,7 @@ class GameMenu < Menu
       @help_menu.run
     when 'MainMenu'
       @display_menu = false
-      @exit
+      @exit.call()
     end
   end
 end
@@ -121,16 +121,17 @@ end
 class LevelMenu < Menu
   def initialize(window, levels)
     @levels = levels
+
     super([*levels.map(&:name), 'Back'], 'Level Select', window)
   end
 
-  def do_option(option)
-    if option == 'Back'
-      @display_menu = false
-    else
-      selected_level = @levels.find { |level| level.name == option }
-      selected_level.run
-    end
+  def do_option()
+    option = @options[@current_index]
+    @display_menu = false
+    return if option == 'Back'
+
+    selected_level = @levels.find { |level| level.name == option }
+    selected_level.run
   end
 end
 
@@ -145,7 +146,7 @@ class ControlMenu < Menu
     if option == 'Back'
       @display_menu = false
     else
-      control_index = @controls.find_index_by { |control| control[:index] == option }
+      control_index = @controls.find_index_by { |control| control[:name] == option }
       change_control(control_index)
     end
   end
@@ -154,6 +155,6 @@ class ControlMenu < Menu
     new_control = @win.getch
     @selected_control = @controls.find { |control| control[:index] == new_control }
     @selected_control[:control] = nil
-    @controls[index] = new_control
+    @controls[index][:control] = new_control
   end
 end

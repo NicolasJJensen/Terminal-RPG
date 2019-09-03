@@ -1,6 +1,14 @@
 require 'curses'
 require_relative './Core/menu'
 
+class Level
+  attr_accessor :name
+
+  def initialize
+    @name = 'Level 1'
+  end
+end
+
 def setup_curses
   Curses.init_screen
   Curses.start_color
@@ -15,13 +23,15 @@ def new_window
   return win
 end
 
-def to_proc
-  proc { |name| "#{@greating}, #{name}!" }
+def start_game
+  proc { |level| games[level].run }
 end
 
 setup_curses
 win = new_window
 
-menu = MainMenu.new(win)
+level_menu = LevelMenu.new(win, [Level.new()])
+controls_menu = ControlMenu.new(win, [])
+main_menu = MainMenu.new(win, level_menu, controls_menu)
 
-menu.run()
+main_menu.run()
