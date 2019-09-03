@@ -4,26 +4,90 @@ require 'curses'
 
 # Class containing logic and all information pertaining to a game
 class Game
-  attr_reader :window
-
   def initialize(window)
     @window = window
     @game_over = false
+    menu_setup
+  end
+
+  def menu_setup
     @menu = GameMenu.new(@window, exit_game)
   end
 
-  private
-
-  def window_setup
-    Curses.init_screen
-    Curses.start_color
-    Curses.curs_set(0)
-    Curses.noecho
-    win = Curses::Window.new(0, 0, 0, 0)
-    win.nodelay = true
-    win.keypad = true
-    return win
+  def run
+    @start_time = Time.now
+    until game_over
+      update_objects
+      move_objects
+      collision_logic
+      draw
+      frame_rate_logic
+    end
   end
+
+  def frame_rate_logic
+    @finish_time = Time.now
+    delta_time = @finish_time - @start_time
+    sleep_time = 1 / @frame_rate - delta_time
+    sleep(sleep_time >= 0 ? sleep_time : 0)
+    @start_time = Time.now
+  end
+
+  def draw
+    @win.erase
+    draw_terrain
+    draw_characters
+    draw_attack
+    @win.refresh
+  end
+
+  def draw_terrain
+  end
+
+  def draw_characters
+  end
+
+  def draw_attack
+  end
+
+  def update_objects
+    update_characters
+    update_attacks
+  end
+
+  def update_characters
+  end
+
+  def update_attacks
+  end
+
+  def move_objects
+    move_characters
+    move_attacks
+  end
+
+  def move_characters
+  end
+
+  def move_attacks
+  end
+
+  def collision_logic
+    terrain_collision
+    character_collision
+    attack_collision
+  end
+
+  def terrain_collision
+  end
+
+  def character_collision
+  end
+
+  def attack_collision
+  end
+
+  private
 
   def exit_game
     proc { @game_over = true }

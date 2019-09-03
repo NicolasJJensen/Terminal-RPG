@@ -17,20 +17,16 @@ class Menu
   end
 
   def draw
-    max_length = @options.map(&:length).max
     @win.setpos(0, 0)
     @win.addstr(' ' + @title)
     @win.setpos(1, 0)
-    @win.addstr(' ' + '-' * max_length)
+    @win.addstr(' ' + '-' * @title.length)
 
     @options.map.with_index do |option, i|
-      @win.setpos(i + 2, 0)
-      arrow = ' '
-      if i == @current_index
-        # set_color
-        arrow = '>'
-      end
-      @win.addstr("#{arrow}#{option}\n")
+      option_text = "#{i == @current_index ? 'ᐅ ' : ''}#{option}#{i == @current_index ? ' ᐊ' : ''}"
+      x = @win.maxx/2 - option_text.length / 2
+      @win.setpos(i + 2, x)
+      @win.addstr(option_text)
     end.join("\n")
   end
 
@@ -39,6 +35,7 @@ class Menu
   end
 
   def run
+    @display_menu = true
     while @display_menu
       @win.clear
       draw()
@@ -65,7 +62,7 @@ class MainMenu < Menu
     @control_menu = ControlMenu.new(window, [])
     @level_menu = LevelMenu.new(window, [])
 
-    super(%w[Start Controls Help About Exit], 'Main Menu', window)
+    super(%w[Start_Game Controls Help More_info Exit], 'Main Menu', window)
   end
 
   def do_option()
