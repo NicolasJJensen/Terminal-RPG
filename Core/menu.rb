@@ -3,11 +3,14 @@
 require 'curses'
 require_relative './Colors/menu'
 require_relative './Helpers/paint_color'
+require_relative './Helpers/controls'
 
 # Base class for menu control
 class Menu
   attr_reader :title, :options
   attr_accessor :current_index
+
+  @@controls = CONTROLS
 
   def initialize(items, title)
     @title = title
@@ -63,12 +66,18 @@ class Menu
   def do_input
     user_input = @win.getch
     case user_input
-    when Curses::KEY_UP
+    when @@controls[0][:control] #Up control - Curses::KEY_UP
       @current_index = (@current_index - 1) % @options.length
-    when Curses::KEY_DOWN
+    when @@controls[1][:control] #Down control - Curses::KEY_DOWN
       @current_index = (@current_index + 1) % @options.length
-    when Curses::KEY_ENTER, 10
+    when @@controls[4][:control] #Enter control - Curses::KEY_ENTER, 10
       do_option()
+    end
+  end
+
+  class << self
+    def set_controls(controls)
+      @@controls = controls
     end
   end
 end
@@ -165,15 +174,14 @@ class ControlMenu < Menu
     if option == 'Back'
       @display_menu = false
     else
-      control_index = @controls.find_index_by { |control| control[:name] == option }
+      control_index = @controls.find_index { |control| control[:name] == option }
       change_control(control_index)
     end
   end
 
   def change_control(index)
     new_control = @win.getch
-    @selected_control = @controls.find { |control| control[:index] == new_control }
-    @selected_control[:control] = nil
     @controls[index][:control] = new_control
+    @@controls = @controls
   end
 end
