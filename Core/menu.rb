@@ -2,7 +2,7 @@
 
 require 'curses'
 require_relative './Colors/menu'
-require_relative './paint_color'
+require_relative './Helpers/paint_color'
 
 # Base class for menu control
 class Menu
