@@ -184,4 +184,61 @@ class ControlMenu < Menu
     @controls[index][:control] = new_control
     @@controls = @controls
   end
+
+  def draw
+    @win.bkgd(Curses.color_pair(BACKGROUND))
+    @win.attron(Curses.color_pair(TEXT))
+    x = @win.maxx / 2 - @title.length / 2
+    y = @win.maxy / 2 - @options.length / 2
+
+    @win.setpos(y, x)
+    @win.addstr(@title)
+    @win.setpos(y + 1, x)
+    @win.addstr('-' * @title.length)
+
+    options_max = @options.max_by(&:length).length
+    key_max = @controls.map { |control| control_to_string(control[:control]) }.max_by(&:length).length
+    left = @win.maxx / 2 - (options_max + key_max + 10) / 2
+
+    @options[0...-1].each.with_index do |option, i|
+      color = TEXT
+      color = TEXT_SUCCESS if i == @current_index
+
+      control = control_to_string(@controls[i][:control])
+
+      paint(@win, color) do
+        option_text = "#{i == @current_index ? 'ᐅ ' : '  '}#{option}"
+
+        @win.setpos(y + i + 2, left)
+        @win.addstr(option_text + (' ' * ((options_max + key_max + 10) - option_text.length - control.length)) + control)
+      end
+    end
+
+    option_text = "#{@current_index == @options.length - 1 ? 'ᐅ ' : '  '}#{@options[-1]}"
+    color = @current_index == @options.length - 1 ? TEXT_SUCCESS : TEXT_WARNING
+
+    x = @win.maxx / 2 - @options[-1].length / 2
+    @win.setpos(y + @options.length + 2, x)
+    paint(@win, color) do
+      @win.addstr(option_text)
+    end
+
+  end
+
+  def control_to_string(control)
+    return control if control.class == String
+
+    case control
+    when 259
+      'Up Key'
+    when 258
+      'Down Key'
+    when 260
+      'Left Key'
+    when 261
+      'Right key'
+    when 10
+      'Enter Key'
+    end
+  end
 end

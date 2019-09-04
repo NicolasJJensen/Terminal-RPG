@@ -9,6 +9,10 @@ class Level
   def initialize(name)
     @name = name
     @game_over = false
+    @characters = []
+    @attacks = []
+    @floor = []
+    @terrain = []
     menu_setup
   end
 
