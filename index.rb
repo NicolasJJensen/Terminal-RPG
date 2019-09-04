@@ -1,5 +1,7 @@
 require 'curses'
 require_relative './Core/menu'
+require_relative './Core/Colors/base'
+require_relative './Core/Colors/menu'
 
 class Level
   attr_accessor :name
@@ -14,6 +16,8 @@ def setup_curses
   Curses.start_color
   Curses.curs_set(0)
   Curses.noecho
+  init_colors(Curses)
+  init_pairs(Curses)
 end
 
 def new_window

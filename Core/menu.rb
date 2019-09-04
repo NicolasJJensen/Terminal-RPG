@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+require 'curses'
+require_relative './Colors/menu'
+require_relative './paint_color'
+
 # Base class for menu control
 class Menu
   attr_reader :title, :options
@@ -17,16 +21,28 @@ class Menu
   end
 
   def draw
-    @win.setpos(0, 0)
-    @win.addstr(' ' + @title)
-    @win.setpos(1, 0)
-    @win.addstr(' ' + '-' * @title.length)
+    @win.bkgd(Curses.color_pair(BACKGROUND))
+    @win.attron(Curses.color_pair(TEXT))
+    x = @win.maxx / 2 - @title.length / 2
+    y = @win.maxy / 2 - @options.length / 2
 
-    @options.map.with_index do |option, i|
-      option_text = "#{i == @current_index ? 'ᐅ ' : ''}#{option}#{i == @current_index ? ' ᐊ' : ''}"
-      x = @win.maxx/2 - option_text.length / 2
-      @win.setpos(i + 2, x)
-      @win.addstr(option_text)
+    @win.setpos(y, x)
+    @win.addstr(@title)
+    @win.setpos(y + 1, x)
+    @win.addstr('-' * @title.length)
+
+    @options.each.with_index do |option, i|
+      color = TEXT
+      color = TEXT_WARNING if i == @options.length - 1
+      color = TEXT_SUCCESS if i == @current_index
+
+      paint(@win, color) do
+        option_text = "#{i == @current_index ? 'ᐅ ' : ''}#{option}#{i == @current_index ? ' ᐊ' : ''}"
+        x = @win.maxx / 2 - option_text.length / 2
+
+        @win.setpos(y + i + 2, x)
+        @win.addstr(option_text)
+      end
     end.join("\n")
   end
 
