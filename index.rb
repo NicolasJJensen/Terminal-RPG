@@ -1,15 +1,6 @@
 require 'curses'
-require_relative './Core/menu'
+require_relative './Menus/main_menu'
 require_relative './Core/Colors/base'
-require_relative './Core/Colors/menu'
-
-class Level
-  attr_accessor :name
-
-  def initialize
-    @name = 'Level 1'
-  end
-end
 
 def setup_curses
   Curses.init_screen
@@ -34,8 +25,4 @@ end
 setup_curses
 win = new_window
 
-level_menu = LevelMenu.new(win, [Level.new()])
-controls_menu = ControlMenu.new(win, [])
-main_menu = MainMenu.new(win, level_menu, controls_menu)
-
-main_menu.run()
+MAIN_MENU.run(win)

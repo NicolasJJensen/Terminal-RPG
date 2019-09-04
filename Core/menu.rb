@@ -9,12 +9,9 @@ class Menu
   attr_reader :title, :options
   attr_accessor :current_index
 
-  def initialize(items, title, window)
+  def initialize(items, title)
     @title = title
     @options = items
-
-    @win = window
-    @win.nodelay = false if @win
 
     @current_index = 0
     @display_menu = true
@@ -50,7 +47,10 @@ class Menu
     @options[@current_index]
   end
 
-  def run
+  def run(window)
+    @win = window
+    @win.nodelay = false if @win
+
     @display_menu = true
     while @display_menu
       @win.clear
@@ -74,20 +74,20 @@ class Menu
 end
 
 class MainMenu < Menu
-  def initialize(window, level_menu, control_menu)
+  def initialize(level_menu, control_menu)
     @level_menu = level_menu
     @control_menu = control_menu
 
-    super(%w[Start_Game Controls Help More_Info Exit], 'Main Menu', window)
+    super(%w[Start_Game Controls Help More_Info Exit], 'Main Menu')
   end
 
   def do_option()
     option = @options[@current_index]
     case option
     when 'Start_Game'
-      @level_menu.run
+      @level_menu.run(@win)
     when 'Controls'
-      @control_menu.run
+      @control_menu.run(@win)
     when 'Help'
       show_help
     when 'More_Info'
@@ -110,12 +110,12 @@ class MainMenu < Menu
 end
 
 class GameMenu < Menu
-  def initialize(window, exit_proc)
+  def initialize(control_menu, exit_proc)
     @exit = exit_proc
 
-    @control_menu = ControlMenu.new(window, [])
+    @control_menu = control_menu
 
-    super(%w[Continue Controls Help MainMenu], 'Game Menu', window)
+    super(%w[Continue Controls Help MainMenu], 'Game Menu')
   end
 
   def do_option()
@@ -124,9 +124,9 @@ class GameMenu < Menu
     when 'Continue'
       @display_menu = false
     when 'Controls'
-      @control_menu.run
+      @control_menu.run(@win)
     when 'Help'
-      @help_menu.run
+      @help_menu.run(@win)
     when 'MainMenu'
       @display_menu = false
       @exit.call()
@@ -135,10 +135,10 @@ class GameMenu < Menu
 end
 
 class LevelMenu < Menu
-  def initialize(window, levels)
+  def initialize(levels)
     @levels = levels
 
-    super([*levels.map(&:name), 'Back'], 'Level Select', window)
+    super([*levels.map(&:name), 'Back'], 'Level Select')
   end
 
   def do_option()
@@ -147,14 +147,17 @@ class LevelMenu < Menu
     return if option == 'Back'
 
     selected_level = @levels.find { |level| level.name == option }
-    selected_level.run
+    selected_level.run(@win)
   end
 end
 
 class ControlMenu < Menu
-  def initialize(window, controls)
+  def initialize(controls)
     @controls = controls
-    super([*controls.map(&:name), 'Back'], 'Controls', window)
+    control_names = controls.map do |control|
+      control[:name]
+    end
+    super([*control_names, 'Back'], 'Controls')
   end
 
   def do_option()

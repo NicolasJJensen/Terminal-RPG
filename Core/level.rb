@@ -1,20 +1,23 @@
 # frozen_string_literal: true
 
 require 'curses'
+require_relative '../Menus/controls_menu'
 
-# Class containing logic and all information pertaining to a game
+# Class containing logic and all information pertaining to a game level
 class Level
-  def initialize(window)
-    @window = window
+  attr_accessor :name
+  def initialize(name)
+    @name = name
     @game_over = false
     menu_setup
   end
 
   def menu_setup
-    @menu = GameMenu.new(@window, exit_level)
+    @menu = GameMenu.new(CONTROLS_MENU, exit_level)
   end
 
-  def run
+  def run(win)
+    @win = win
     @start_time = Time.now
     until game_over
       update_objects
