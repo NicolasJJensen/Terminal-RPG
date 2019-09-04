@@ -50,4 +50,12 @@ class Vector
   def gradient
     @y / @x.to_f
   end
+
+  def <=>(other)
+    [@x, @y] <=> [other.x, other.y]
+  end
+
+  def ==(other)
+    [@x, @y] == [other.x, other.y]
+  end
 end
