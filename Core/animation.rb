@@ -20,6 +20,10 @@ class Animation
     @current_sprite_index += (@fps / @@frame_rate.to_f)
   end
 
+  def current_sprite
+    @sprites[@current_sprite_index.floor % @sprites.length]
+  end
+
   def width
     index = @current_sprite_index.floor % @sprites.length
     @sprites[index].width + @sprite_positions[index].x
@@ -28,6 +32,12 @@ class Animation
   def height
     index = @current_sprite_index.floor % @sprites.length
     @sprites[index].height + @sprite_positions[index].y
+  end
+
+  def ==(other)
+    @sprites == other.sprites &&
+      @sprite_positions == other.sprite_positions &&
+      @fps == other.fps
   end
 
   class << self

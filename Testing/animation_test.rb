@@ -32,6 +32,10 @@ class GraphicTest < Test::Unit::TestCase
     assert_equal(@animation.current_sprite_index, 0)
   end
 
+  def test_current_sprite
+    assert_equal(@animation.current_sprite, @sprite)
+  end
+
   def test_fps_initalized
     assert_equal(@animation.fps, 60)
   end

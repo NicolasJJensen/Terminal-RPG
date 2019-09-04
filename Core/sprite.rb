@@ -30,4 +30,9 @@ class Sprite
       graphic.height + @graphics_pos[i].y
     end.max
   end
+
+  def ==(other)
+    @graphics == other.graphics &&
+      @graphics_pos == other.graphics_pos
+  end
 end

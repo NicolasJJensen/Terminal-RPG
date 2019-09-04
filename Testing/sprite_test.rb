@@ -6,7 +6,7 @@ require_relative '../Core/graphic'
 require_relative '../Core/sprite'
 
 # Tests for the Game class
-class GraphicTest < Test::Unit::TestCase
+class SpriteTest < Test::Unit::TestCase
   def setup
     graphic = "
 ****
@@ -28,5 +28,10 @@ class GraphicTest < Test::Unit::TestCase
 
   def test_height
     assert_equal(@sprite.height, 7)
+  end
+
+  def test_equality
+    sprite2 = Sprite.new([@graphic], [Vector.new(:x => 2, :y => 3)])
+    assert_equal(@sprite, sprite2)
   end
 end

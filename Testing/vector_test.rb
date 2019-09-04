@@ -70,4 +70,9 @@ class VectorTest < Test::Unit::TestCase
     gradient = @vector.gradient
     assert_equal(gradient, 4 / 3.0)
   end
+
+  def test_equality
+    vector2 = Vector.new(:x => 3, :y => 4)
+    assert_equal(@vector, vector2)
+  end
 end
