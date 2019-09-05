@@ -18,6 +18,8 @@ class Level
     @terrain = []
     @menu = GameMenu.new(CONTROLS_MENU, exit_level)
     @frame_rate = 60.0
+    @hud = RawGraphic.new('|' * (@player.health / 10), HEALTH_BAR)
+    @hud_text = RawGraphic.new('HEALTH: ', HEALTH_TEXT)
   end
 
   def run(win)
@@ -58,10 +60,11 @@ class Level
 
   def draw
     @win.erase
-    @win.bkgd(Curses.color_pair(WHITE))
+    @win.bkgd(Curses.color_pair(WHITE_BKG))
     draw_terrain
     draw_characters
     draw_attack
+    draw_health
     @win.refresh
   end
 
@@ -75,9 +78,19 @@ class Level
   def draw_attack
   end
 
+  def draw_health
+    @hud.draw(@win, Vector.new(:x => 8, :y => 0))
+    @hud_text.draw(@win, Vector.new(:x => 0, :y => 0))
+  end
+
   def update
     update_characters
     update_attacks
+    update_hud
+  end
+
+  def update_hud
+    @hud.graphic = '|' * (@player.health / 10)
   end
 
   def update_characters
