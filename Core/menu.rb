@@ -66,11 +66,11 @@ class Menu
   def do_input
     user_input = @win.getch
     case user_input
-    when @@controls[0][:control] #Up control - Curses::KEY_UP
+    when @@controls[0][:control] # Up control - Curses::KEY_UP
       @current_index = (@current_index - 1) % @options.length
-    when @@controls[1][:control] #Down control - Curses::KEY_DOWN
+    when @@controls[1][:control] # Down control - Curses::KEY_DOWN
       @current_index = (@current_index + 1) % @options.length
-    when @@controls[4][:control] #Enter control - Curses::KEY_ENTER, 10
+    when @@controls[4][:control] # Enter control - Curses::KEY_ENTER, 10
       do_option()
     end
   end
@@ -222,7 +222,6 @@ class ControlMenu < Menu
     paint(@win, color) do
       @win.addstr(option_text)
     end
-
   end
 
   def control_to_string(control)

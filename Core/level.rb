@@ -100,13 +100,3 @@ class Level
     proc { @game_over = true }
   end
 end
-
-class RandomLevel < Level
-  def initialize
-  end
-end
-
-class CustomLevel < Level
-  def initialize
-  end
-end
