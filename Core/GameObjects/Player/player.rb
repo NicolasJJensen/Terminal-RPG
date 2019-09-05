@@ -6,7 +6,7 @@ require_relative '../../vector'
 
 # Class for the player character and all their interactions
 class Player < Character
-  attr_accessor :creation_proc
+  attr_accessor :creation_proc, :velocity
 
   def initialize(pos, effect = nil, e_cooldown = nil, creation_proc = nil)
     super(PLAYER_DOWN, pos, 80, nil)

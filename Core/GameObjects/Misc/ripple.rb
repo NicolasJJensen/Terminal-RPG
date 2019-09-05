@@ -7,8 +7,8 @@ require_relative '../../Colors/terrain'
 
 Animation.set_frame_rate(30.0)
 
-ripple_graphic1 = Circle.new(1, 1, '*', WATER_LIGHT)
-ripple_graphic2 = Circle.new(3, 1, '*', WATER_LIGHT)
+ripple_graphic1 = Circle.new(1, 1, '.', WATER_LIGHT)
+ripple_graphic2 = Circle.new(3, 1, '.', WATER_LIGHT)
 ripple_graphic3 = Circle.new(5, 1, '*', WATER_LIGHT)
 ripple_graphic4 = Circle.new(7, 1, '*', WATER)
 ripple_graphic5 = Circle.new(9, 1, '*', WATER)
@@ -137,7 +137,7 @@ RIPPLE_DOUBLE_ANIMATION = Animation.new(
     Vector.new(:x => 0, :y => 0),
     Vector.new(:x => 0, :y => 0)
   ],
-  8.0
+  10.0
 )
 
 RIPPLE_ANIMATION = Animation.new(

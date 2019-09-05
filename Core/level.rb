@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'curses'
+require 'artii'
 require_relative '../Menus/controls_menu'
 require_relative './Helpers/build_maze'
 require_relative './Helpers/hud'
@@ -51,6 +52,7 @@ class Level
     @win = win
     @floor = init_floor
     @win.nodelay = true
+    @game_over = false
 
     @start_time = Time.now
     until @game_over
@@ -166,9 +168,19 @@ class Level
 
   def update_local_pos
     pos = @player.pos - Vector.new(:x => @win.maxx/2, :y => @win.maxy/2) - Vector.new(:x => @player_width/2, :y => @player_height/2)
+    if 0 < @maze_width * @maze_cell_size - @win.maxx
+      x = pos.x.clamp(0, @maze_width * @maze_cell_size - @win.maxx)
+    else
+      x = 0
+    end
+    if 0 < @maze_height * @maze_cell_size - @win.maxy
+      y = pos.y.clamp(0, @maze_height * @maze_cell_size - @win.maxy)
+    else
+      y = 0
+    end
     @local_position = Vector.new(
-      :x => pos.x.clamp(0, @maze_width * @maze_cell_size - @win.maxx),
-      :y => pos.y.clamp(0, @maze_height * @maze_cell_size - @win.maxy)
+      :x => x,
+      :y => y
     )
   end
 
@@ -194,6 +206,34 @@ class Level
     terrain_collision
     character_collision
     attack_collision
+    check_out_of_bounds
+  end
+
+  def display_win
+    @win.clear
+    str = Artii::Base.new.asciify("YOU WON")
+    str.split("\n").each.with_index do |line, i|
+      @win.setpos(i, 0)
+      line.chars.each do |char|
+        @win.addch(char)
+      end
+    end
+    @win.refresh
+    sleep(1)
+    sleep(1)
+  end
+
+  def check_out_of_bounds
+    if @player.pos.x.negative?
+      @player.pos = Vector.new(:x => 6, :y => 6)
+      @player.velocity = Vector.new(:x => 0, :y => 0)
+      @game_over = true
+    elsif (@player.pos.x + @player.width - @local_position.x) >= @win.maxx
+      display_win
+      @player.pos = Vector.new(:x => 6, :y => 6)
+      @player.velocity = Vector.new(:x => 0, :y => 0)
+      @game_over = true
+    end
   end
 
   def terrain_collision

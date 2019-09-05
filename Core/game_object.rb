@@ -31,6 +31,10 @@ class GameObject
     @animation.height
   end
 
+  def copy
+    GameObject.new(@animation.dup, @pos.dup)
+  end
+
   def collides?(other)
     !(
       @pos.x + width <= other.pos.x ||
