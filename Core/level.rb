@@ -2,6 +2,7 @@
 
 require 'curses'
 require_relative '../Menus/controls_menu'
+require_relative './Colors/character'
 require_relative './GameObjects/Player/player'
 
 # Class containing logic and all information pertaining to a game level
@@ -16,7 +17,7 @@ class Level
     @floor = []
     @terrain = []
     @menu = GameMenu.new(CONTROLS_MENU, exit_level)
-    @frame_rate = 60
+    @frame_rate = 60.0
   end
 
   def run(win)
@@ -50,13 +51,14 @@ class Level
   def frame_rate_logic
     @finish_time = Time.now
     delta_time = @finish_time - @start_time
-    sleep_time = 1 / @frame_rate - delta_time
+    sleep_time = 1.0 / @frame_rate - delta_time
     sleep(sleep_time >= 0 ? sleep_time : 0)
     @start_time = Time.now
   end
 
   def draw
     @win.erase
+    @win.bkgd(Curses.color_pair(WHITE))
     draw_terrain
     draw_characters
     draw_attack
@@ -79,6 +81,7 @@ class Level
   end
 
   def update_characters
+    @player.update
   end
 
   def update_attacks

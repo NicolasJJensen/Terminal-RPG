@@ -51,7 +51,7 @@ class Menu
     x = @win.maxx / 2 - title_length / 2
     y = @win.maxy / 2 - (@options.length * 10) / 2 - 10
 
-    @title_graphic.draw(@win, Vector.new(:x => x, :y => y))
+    @title_graphic.draw(@win, Vector.new(x: x, y: y))
 
     @art_options.each.with_index do |option_graphic, i|
       color = TEXT
@@ -61,7 +61,7 @@ class Menu
       option_length = option_graphic.graphic.split("\n").map(&:length).max
       x = @win.maxx / 2 - option_length / 2
 
-      option_graphic.draw(@win, Vector.new(:x => x, :y => (y + i * 10 + 20)), color)
+      option_graphic.draw(@win, Vector.new(x: x, y: (y + i * 10 + 20)), color)
     end
   end
 
@@ -76,9 +76,9 @@ class Menu
     @display_menu = true
     while @display_menu
       @win.erase
-      draw()
+      draw
       @win.refresh
-      do_input()
+      do_input
     end
   end
 
@@ -90,7 +90,7 @@ class Menu
     when @@controls[1][:control] # Down control - Curses::KEY_DOWN
       @current_index = (@current_index + 1) % @options.length
     when @@controls[4][:control] # Enter control - Curses::KEY_ENTER, 10
-      do_option()
+      do_option
     end
   end
 
@@ -110,10 +110,10 @@ class MainMenu < Menu
     @level_menu = level_menu
     @control_menu = control_menu
 
-    super(["Start Game", "Controls", "Help", "More Info", "Exit"], 'Main Menu')
+    super(['Start Game', 'Controls', 'Help', 'More Info', 'Exit'], 'Main Menu')
   end
 
-  def do_option()
+  def do_option
     option = @options[@current_index]
     case option
     when 'Start Game'
@@ -147,10 +147,10 @@ class GameMenu < Menu
 
     @control_menu = control_menu
 
-    super(["Continue" "Controls" "Help" "Main Menu"], 'Game Menu')
+    super(['Continue', 'Controls', 'Help', 'Main Menu'], 'Game Menu')
   end
 
-  def do_option()
+  def do_option
     option = @options[@current_index]
     case option
     when 'Continue'
@@ -161,7 +161,7 @@ class GameMenu < Menu
       @help_menu.run(@win)
     when 'Main Menu'
       @display_menu = false
-      @exit.call()
+      @exit.call
     end
   end
 end
@@ -173,7 +173,7 @@ class LevelMenu < Menu
     super([*levels.map(&:name), 'Back'], 'Level Select')
   end
 
-  def do_option()
+  def do_option
     option = @options[@current_index]
     @display_menu = false
     return if option == 'Back'
@@ -192,7 +192,7 @@ class ControlMenu < Menu
     super([*control_names, 'Back'], 'Controls')
   end
 
-  def do_option()
+  def do_option
     option = @options[@current_index]
     if option == 'Back'
       @display_menu = false

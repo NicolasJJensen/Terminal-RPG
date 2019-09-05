@@ -3,7 +3,7 @@
 # Class to keep track of which sprite in an animation is currently being shown
 # and how often the animation should change
 class Animation
-  attr_accessor :fps, :sprites, :current_sprite_index, :sprite_positions
+  attr_accessor :fps, :sprites, :current_sprite_index, :sprite_positions, :freeze
 
   @@frame_rate = 30.0
 
@@ -11,13 +11,14 @@ class Animation
     @sprite_positions = sprite_positions
     @sprites = sprites
     @current_sprite_index = 0
-    @fps = fps
+    @fps = fps.to_f
+    @freeze = false
   end
 
   def draw(win, pos)
     index = @current_sprite_index.floor % @sprites.length
     @sprites[index].draw(win, pos + @sprite_positions[index])
-    @current_sprite_index += (@fps / @@frame_rate.to_f)
+    @current_sprite_index += (@fps / @@frame_rate.to_f) unless freeze
   end
 
   def current_sprite

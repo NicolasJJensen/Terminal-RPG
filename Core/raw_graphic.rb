@@ -14,6 +14,14 @@ class RawGraphic
     @color = color
   end
 
+  def flip
+    max_length = width
+    new_graphic = @graphic.split("\n").map do |line|
+      (line + (' ' * (max_length - line.length))).reverse
+    end.join("\n")
+    RawGraphic.new(new_graphic, @color, @transparency)
+  end
+
   def draw(win, pos, color = @color)
     paint(win, color) do
       @graphic.split("\n").each.with_index do |line, row|
