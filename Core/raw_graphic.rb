@@ -8,18 +8,18 @@ class RawGraphic
   attr_accessor :color
   attr_accessor :graphic
 
-  def initialize(graphic, color)
+  def initialize(graphic, color, transparency = true)
+    @transparency = transparency
     @graphic = graphic.rstrip.reverse.chomp.reverse
     @color = color
   end
 
   def draw(win, pos)
-    paint(color) do
+    paint(win, color) do
       @graphic.split("\n").each.with_index do |line, row|
-        win.setpos(pos.y + row, pos.x)
-
         line.chars.each.with_index do |char, col|
-          next if pos.x + col >= win.maxx || pos.y + row >= win.maxy
+          win.setpos(pos.y + row, pos.x + col)
+          next if pos.x + col >= win.maxx || pos.y + row >= win.maxy || (@transparency && char == ' ')
 
           win.addch(char)
         end

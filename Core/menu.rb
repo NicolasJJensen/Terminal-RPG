@@ -52,7 +52,7 @@ class Menu
 
   def run(window)
     @win = window
-    @win.nodelay = false if @win
+    @win.nodelay = false
 
     @display_menu = true
     while @display_menu
@@ -75,12 +75,13 @@ class Menu
     end
   end
 
-  def do_option(option)
-  end
-
   class << self
     def set_controls(controls)
       @@controls = controls
+    end
+
+    def get_controls
+      @@controls
     end
   end
 end

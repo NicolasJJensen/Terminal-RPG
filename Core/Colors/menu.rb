@@ -3,7 +3,7 @@
 require_relative './base'
 
 #=========== ColorPairs ===========#
-def init_pairs(curses)
+def init_menu_pairs(curses)
   curses.init_pair(1, JADE_DARK, BLACK)       # Success Text
   curses.init_pair(2, RED_DARK, BLACK)        # Fail Text
   curses.init_pair(3, YELLOW_DARK, BLACK)     # Warning Text

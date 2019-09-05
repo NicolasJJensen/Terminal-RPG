@@ -2,18 +2,24 @@ require 'curses'
 require_relative './Menus/main_menu'
 require_relative './Core/Colors/base'
 
+system('echo -e "\033]50;SetProfile=Terminal-RPG\a"')
+system('clear')
+system('clear')
+puts 'Press enter when ready?'
+gets
+
 def setup_curses
   Curses.init_screen
   Curses.start_color
   Curses.curs_set(0)
   Curses.noecho
   init_colors(Curses)
-  init_pairs(Curses)
+  init_menu_pairs(Curses)
+  init_player_pairs(Curses)
 end
 
 def new_window
   win = Curses::Window.new(0, 0, 0, 0)
-  win.nodelay = true
   win.keypad = true
   win
 end
@@ -25,4 +31,10 @@ end
 setup_curses
 win = new_window
 
-MAIN_MENU.run(win)
+begin
+  MAIN_MENU.run(win)
+ensure
+  Curses.close_screen
+  system('echo -e "\033]50;SetProfile=Default\a"')
+  system('clear')
+end

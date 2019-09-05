@@ -2,6 +2,7 @@
 
 require 'curses'
 require_relative '../Menus/controls_menu'
+require_relative './GameObjects/Player/player'
 
 # Class containing logic and all information pertaining to a game level
 class Level
@@ -9,22 +10,40 @@ class Level
   def initialize(name)
     @name = name
     @game_over = false
+    @player = Player.new(Vector.new(:x => 0, :y => 0))
     @characters = []
     @attacks = []
     @floor = []
     @terrain = []
     @menu = GameMenu.new(CONTROLS_MENU, exit_level)
+    @frame_rate = 60
   end
 
   def run(win)
     @win = win
+    @win.nodelay = true
+
     @start_time = Time.now
-    until game_over
+    until @game_over
+      input_logic
       update
       move
       collision_logic
       draw
       frame_rate_logic
+    end
+  end
+
+  def input_logic
+    case @win.getch
+    when ControlMenu.get_controls[0][:control] # UP
+      @player.move(Vector.new(:x => 0, :y => -1))
+    when ControlMenu.get_controls[1][:control] # DOWN
+      @player.move(Vector.new(:x => 0, :y => 1))
+    when ControlMenu.get_controls[2][:control] # LEFT
+      @player.move(Vector.new(:x => -1, :y => 0))
+    when ControlMenu.get_controls[3][:control] # RIGHT
+      @player.move(Vector.new(:x => 1, :y => 0))
     end
   end
 
@@ -48,6 +67,7 @@ class Level
   end
 
   def draw_characters
+    @player.draw(@win)
   end
 
   def draw_attack
