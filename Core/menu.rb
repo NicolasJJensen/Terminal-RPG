@@ -75,6 +75,9 @@ class Menu
     end
   end
 
+  def do_option(option)
+  end
+
   class << self
     def set_controls(controls)
       @@controls = controls

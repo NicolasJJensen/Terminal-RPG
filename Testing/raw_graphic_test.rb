@@ -4,7 +4,7 @@ require 'test/unit'
 require_relative '../Core/graphic'
 
 # Tests for the Game class
-class GraphicTest < Test::Unit::TestCase
+class RawGraphicTest < Test::Unit::TestCase
   def setup
     graphic = "
 ****
@@ -12,7 +12,7 @@ class GraphicTest < Test::Unit::TestCase
 *  *
 ****
 "
-    @graphic = Graphic.new(graphic, 7)
+    @graphic = RawGraphic.new(graphic, 7)
   end
 
   def test_color_initalized
@@ -20,7 +20,7 @@ class GraphicTest < Test::Unit::TestCase
   end
 
   def test_graphic_initalized
-    assert_equal(@graphic.graphic, "****\n*  *\n*  *\n****")
+    assert_equal(@graphic.graphic, graphic)
   end
 
   def test_width

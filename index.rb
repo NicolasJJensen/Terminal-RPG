@@ -15,7 +15,7 @@ def new_window
   win = Curses::Window.new(0, 0, 0, 0)
   win.nodelay = true
   win.keypad = true
-  return win
+  win
 end
 
 def start_game

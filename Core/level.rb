@@ -13,10 +13,6 @@ class Level
     @attacks = []
     @floor = []
     @terrain = []
-    menu_setup
-  end
-
-  def menu_setup
     @menu = GameMenu.new(CONTROLS_MENU, exit_level)
   end
 
@@ -24,8 +20,8 @@ class Level
     @win = win
     @start_time = Time.now
     until game_over
-      update_objects
-      move_objects
+      update
+      move
       collision_logic
       draw
       frame_rate_logic
@@ -57,7 +53,7 @@ class Level
   def draw_attack
   end
 
-  def update_objects
+  def update
     update_characters
     update_attacks
   end
@@ -68,7 +64,7 @@ class Level
   def update_attacks
   end
 
-  def move_objects
+  def move
     move_characters
     move_attacks
   end
