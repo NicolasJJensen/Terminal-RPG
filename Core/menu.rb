@@ -1,7 +1,12 @@
 # frozen_string_literal: true
 
 require 'curses'
+require 'artii'
+
 require_relative './Colors/menu'
+require_relative './raw_graphic'
+require_relative './vector'
+
 require_relative './Helpers/paint_color'
 require_relative './Helpers/controls'
 
@@ -12,38 +17,52 @@ class Menu
 
   @@controls = CONTROLS
 
-  def initialize(items, title)
+  def initialize(options, title)
     @title = title
-    @options = items
+    @options = options
+
+    setup_art
 
     @current_index = 0
     @display_menu = true
   end
 
+  def setup_art
+    @art_options = @options.map do |option|
+      option_text = option.split(' ').join('  ')
+
+      RawGraphic.new(Artii::Base.new.asciify(option_text))
+    end
+
+    title_text = @title.split(' ').map do |word|
+      word.chars.map { |letter| letter + ' ' }.join
+    end.join('  ')
+
+    @art_title = Artii::Base.new.asciify(title_text)
+    @title_graphic = RawGraphic.new(@art_title, TEXT_FAIL)
+  end
+
   def draw
     @win.bkgd(Curses.color_pair(BACKGROUND))
     @win.attron(Curses.color_pair(TEXT))
-    x = @win.maxx / 2 - @title.length / 2
-    y = @win.maxy / 2 - @options.length / 2
 
-    @win.setpos(y, x)
-    @win.addstr(@title)
-    @win.setpos(y + 1, x)
-    @win.addstr('-' * @title.length)
+    title_length = @art_title.split("\n").map(&:length).max
 
-    @options.each.with_index do |option, i|
+    x = @win.maxx / 2 - title_length / 2
+    y = @win.maxy / 2 - (@options.length * 10) / 2 - 10
+
+    @title_graphic.draw(@win, Vector.new(:x => x, :y => y))
+
+    @art_options.each.with_index do |option_graphic, i|
       color = TEXT
       color = TEXT_WARNING if i == @options.length - 1
       color = TEXT_SUCCESS if i == @current_index
 
-      paint(@win, color) do
-        option_text = "#{i == @current_index ? 'ᐅ ' : ''}#{option}#{i == @current_index ? ' ᐊ' : ''}"
-        x = @win.maxx / 2 - option_text.length / 2
+      option_length = option_graphic.graphic.split("\n").map(&:length).max
+      x = @win.maxx / 2 - option_length / 2
 
-        @win.setpos(y + i + 2, x)
-        @win.addstr(option_text)
-      end
-    end.join("\n")
+      option_graphic.draw(@win, Vector.new(:x => x, :y => (y + i * 10 + 20)), color)
+    end
   end
 
   def current_option
@@ -56,7 +75,7 @@ class Menu
 
     @display_menu = true
     while @display_menu
-      @win.clear
+      @win.erase
       draw()
       @win.refresh
       do_input()
@@ -91,19 +110,19 @@ class MainMenu < Menu
     @level_menu = level_menu
     @control_menu = control_menu
 
-    super(%w[Start_Game Controls Help More_Info Exit], 'Main Menu')
+    super(["Start Game", "Controls", "Help", "More Info", "Exit"], 'Main Menu')
   end
 
   def do_option()
     option = @options[@current_index]
     case option
-    when 'Start_Game'
+    when 'Start Game'
       @level_menu.run(@win)
     when 'Controls'
       @control_menu.run(@win)
     when 'Help'
       show_help
-    when 'More_Info'
+    when 'More Info'
       show_about
     when 'Exit'
       @display_menu = false
@@ -128,7 +147,7 @@ class GameMenu < Menu
 
     @control_menu = control_menu
 
-    super(%w[Continue Controls Help MainMenu], 'Game Menu')
+    super(["Continue" "Controls" "Help" "Main Menu"], 'Game Menu')
   end
 
   def do_option()
@@ -140,7 +159,7 @@ class GameMenu < Menu
       @control_menu.run(@win)
     when 'Help'
       @help_menu.run(@win)
-    when 'MainMenu'
+    when 'Main Menu'
       @display_menu = false
       @exit.call()
     end

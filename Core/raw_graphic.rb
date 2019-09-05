@@ -8,13 +8,13 @@ class RawGraphic
   attr_accessor :color
   attr_accessor :graphic
 
-  def initialize(graphic, color, transparency = true)
+  def initialize(graphic, color = 0, transparency = true)
     @transparency = transparency
     @graphic = graphic.rstrip.reverse.chomp.reverse
     @color = color
   end
 
-  def draw(win, pos)
+  def draw(win, pos, color = @color)
     paint(win, color) do
       @graphic.split("\n").each.with_index do |line, row|
         line.chars.each.with_index do |char, col|
