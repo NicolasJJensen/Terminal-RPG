@@ -6,7 +6,7 @@ require_relative './backward_sprites'
 require_relative './left_sprites'
 require_relative './right_sprites'
 
-Animation.set_frame_rate(60)
+Animation.set_frame_rate(30.0)
 
 PLAYER_DOWN = Animation.new(
   [
@@ -21,7 +21,7 @@ PLAYER_DOWN = Animation.new(
     Vector.new(:x => 0, :y => 0),
     Vector.new(:x => 0, :y => 0)
   ],
-  10
+  5
 )
 
 PLAYER_UP = Animation.new(
@@ -37,7 +37,7 @@ PLAYER_UP = Animation.new(
     Vector.new(:x => 0, :y => 0),
     Vector.new(:x => 0, :y => 0)
   ],
-  10
+  5
 )
 
 PLAYER_LEFT = Animation.new(
@@ -49,7 +49,7 @@ PLAYER_LEFT = Animation.new(
     Vector.new(:x => 0, :y => 0),
     Vector.new(:x => 0, :y => 0)
   ],
-  10
+  5
 )
 
 PLAYER_RIGHT = Animation.new(
@@ -61,5 +61,5 @@ PLAYER_RIGHT = Animation.new(
     Vector.new(:x => 0, :y => 0),
     Vector.new(:x => 0, :y => 0)
   ],
-  10
+  5
 )

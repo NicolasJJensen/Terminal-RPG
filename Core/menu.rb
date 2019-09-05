@@ -155,6 +155,7 @@ class GameMenu < Menu
     case option
     when 'Continue'
       @display_menu = false
+      @win.nodelay = true
     when 'Controls'
       @control_menu.run(@win)
     when 'Help'

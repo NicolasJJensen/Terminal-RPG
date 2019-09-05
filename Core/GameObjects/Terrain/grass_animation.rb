@@ -4,7 +4,7 @@ require_relative '../../vector'
 require_relative '../../raw_graphic'
 require_relative '../../Colors/terrain'
 
-Animation.set_frame_rate(60)
+Animation.set_frame_rate(30.0)
 
 grass_sprite1 = Sprite.new(
   [
@@ -117,5 +117,5 @@ GRASS_ANIMATION = Animation.new(
     Vector.new(:x => 0, :y => 0),
     Vector.new(:x => 0, :y => 0)
   ],
-  10
+  10.0
 )

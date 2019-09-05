@@ -52,7 +52,7 @@ PLAYER_BACKWARD2 = Sprite.new(
     Vector.new(x: 3, y: 9),
     Vector.new(x: 2, y: 11),
     Vector.new(x: 11, y: 7),
-    Vector.new(x: 3, y: 13),
+    Vector.new(x: 4, y: 12),
     Vector.new(x: 8, y: 15),
     Vector.new(x: 1, y: 0)
   ]
@@ -73,7 +73,7 @@ PLAYER_BACKWARD3 = Sprite.new(
     Vector.new(x: 3, y: 9),
     Vector.new(x: 10, y: 11),
     Vector.new(x: 1, y: 7),
-    Vector.new(x: 3, y: 13),
+    Vector.new(x: 3, y: 12),
     Vector.new(x: 3, y: 15),
     Vector.new(x: 0, y: 0)
   ]

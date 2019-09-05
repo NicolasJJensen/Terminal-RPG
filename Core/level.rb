@@ -3,23 +3,22 @@
 require 'curses'
 require_relative '../Menus/controls_menu'
 require_relative './Helpers/build_maze'
+require_relative './Helpers/hud'
 require_relative './Colors/character'
 require_relative './Colors/terrain'
 require_relative './GameObjects/Player/player'
-require_relative './GameObjects/Terrain/grass'
 
 # Class containing logic and all information pertaining to a game level
 class Level
   attr_accessor :name
 
-  def initialize(name)
+  def initialize(name, wall, floor, width, height)
     @frame_rate = 30.0
-
-    wall = GameObject.new(RawGraphic.new(".*.\n*.*\n.*.", HEDGE), Vector.new(:x => 0, :y => 0))
-    @maze_width = 5
-    @maze_height = 5
+    @maze_width = width
+    @maze_height = height
     @maze_cell_size = 40
     @terrain = build_maze(@maze_width, @maze_height, wall, @maze_cell_size)
+    @floor_type = floor
 
     @name = name
     @game_over = false
@@ -33,16 +32,15 @@ class Level
     @attacks = []
 
     @menu = GameMenu.new(CONTROLS_MENU, exit_level)
-    @hud = RawGraphic.new('|' * (@player.health / 10), HEALTH_BAR)
-    @hud_text = RawGraphic.new('HEALTH: ', HEALTH_TEXT)
   end
 
   def init_floor
     (@maze_width*@maze_cell_size/8).times.map do |x|
       (@maze_width*@maze_cell_size/5).times.map do |y|
-        grass = Grass.new(Vector.new(:x => x*8, :y => y*5))
-        grass.animation.current_sprite_index = x + y/2 + rand(4)
-        grass
+        floor = @floor_type.copy
+        floor.pos = Vector.new(:x => x*8, :y => y*5)
+        floor.animation.current_sprite_index = x + y + rand(4)
+        floor
       end
     end.flatten
   end
@@ -73,6 +71,8 @@ class Level
       @player.move(Vector.new(:x => -1, :y => 0))
     when ControlMenu.get_controls[3][:control] # RIGHT
       @player.move(Vector.new(:x => 1, :y => 0))
+    when 'p'
+      @menu.run(@win)
     end
   end
 
@@ -86,7 +86,6 @@ class Level
 
   def draw
     @win.erase
-    @win.bkgd(Curses.color_pair(WHITE_BKG))
     draw_terrain
     draw_characters
     draw_attack
@@ -99,8 +98,8 @@ class Level
       draw_pos = tile.pos - @local_position + Vector.new(:x => 10, :y => 10)
       next if draw_pos.x.negative? ||
               draw_pos.y.negative? ||
-              draw_pos.x - 20 >= @win.maxx ||
-              draw_pos.y - 20 >= @win.maxy
+              draw_pos.x - 30 >= @win.maxx ||
+              draw_pos.y - 30 >= @win.maxy
 
       tile.draw(@win, @local_position * -1)
     end
@@ -109,8 +108,8 @@ class Level
       draw_pos = tile.pos - @local_position + Vector.new(:x => 10, :y => 10)
       next if draw_pos.x.negative? ||
               draw_pos.y.negative? ||
-              draw_pos.x - 20 >= @win.maxx ||
-              draw_pos.y - 20 >= @win.maxy
+              draw_pos.x - 30 >= @win.maxx ||
+              draw_pos.y - 30 >= @win.maxy
 
       tile.draw(@win, @local_position * -1)
     end
@@ -124,14 +123,12 @@ class Level
   end
 
   def draw_health
-    @hud.draw(@win, Vector.new(:x => 8, :y => 0))
-    @hud_text.draw(@win, Vector.new(:x => 0, :y => 0))
+    get_hud(@player.health / 100.0).draw(@win, Vector.new(:x => 0, :y => 0))
   end
 
   def update
     update_characters
     update_attacks
-    update_hud
     update_local_pos
   end
 
@@ -141,10 +138,6 @@ class Level
       :x => pos.x.clamp(0, @maze_width * @maze_cell_size - @win.maxx),
       :y => pos.y.clamp(0, @maze_height * @maze_cell_size - @win.maxy)
     )
-  end
-
-  def update_hud
-    @hud.graphic = '|' * (@player.health / 10)
   end
 
   def update_characters

@@ -7,7 +7,7 @@ require_relative '../../vector'
 # Class for the player character and all their interactions
 class Player < Character
   def initialize(pos)
-    super(PLAYER_DOWN, pos, 100, nil)
+    super(PLAYER_DOWN, pos, 80, nil)
     @velocity = Vector.new(:x => 0, :y => 0)
     @move = 0
   end

@@ -5,7 +5,7 @@ def build_maze(x, y, wall, cell_size)
   terrain = []
   maze = Maze.new(x, y)
 
-  wall_tiling = (cell_size / wall.width)
+  wall_tiling = (cell_size / wall.width.to_f).ceil
 
   maze.grid.each.with_index do |row, i|
     row.each.with_index do |cell, j|
@@ -17,12 +17,12 @@ def build_maze(x, y, wall, cell_size)
         end
         if cell.walls[1]
           new_wall = wall.dup
-          new_wall.pos = Vector.new(:x => i * cell_size + cell_size, :y => j * cell_size + k * wall.width)
+          new_wall.pos = Vector.new(:x => i * cell_size + cell_size - wall.width, :y => j * cell_size + k * wall.width)
           terrain << new_wall
         end
         if cell.walls[2]
           new_wall = wall.dup
-          new_wall.pos = Vector.new(:x => i * cell_size + k * wall.width, :y => j * cell_size + cell_size)
+          new_wall.pos = Vector.new(:x => i * cell_size + k * wall.width, :y => j * cell_size + cell_size - wall.width)
           terrain << new_wall
         end
         if cell.walls[3]

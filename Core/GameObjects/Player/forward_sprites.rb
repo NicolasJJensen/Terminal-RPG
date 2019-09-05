@@ -77,8 +77,8 @@ PLAYER_FORWARD3 = Sprite.new(
     Vector.new(x: 3, y: 9),
     Vector.new(x: 9, y: 9),
     Vector.new(x: 1, y: 8),
-    Vector.new(x: 3, y: 12),
     Vector.new(x: 7, y: 13),
+    Vector.new(x: 3, y: 12),
     Vector.new(x: 3, y: 15),
     Vector.new(x: 0, y: 0)
   ]

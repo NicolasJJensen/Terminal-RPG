@@ -50,7 +50,7 @@ PLAYER_RIGHT2 = Sprite.new(
     Vector.new(x: 1, y: 1),
     Vector.new(x: 4, y: 11),
     Vector.new(x: 2, y: 10),
-    Vector.new(x: 7, y: 10),
+    Vector.new(x: 8, y: 10),
     Vector.new(x: 4, y: 13),
     Vector.new(x: 2, y: 13),
     Vector.new(x: 0, y: 0)

@@ -12,7 +12,7 @@ def init_player_pairs(curses)
   curses.init_pair(12, BLACK, BLACK)                      # Border
   curses.init_pair(13, WHITE, WHITE)                      # white
   curses.init_pair(14, RED, RED)                          # health
-  curses.init_pair(15, RED, WHITE)                        # health text
+  curses.init_pair(15, BLACK, RED)                        # health text
 end
 
 PLAYER_HAIR     = 7
