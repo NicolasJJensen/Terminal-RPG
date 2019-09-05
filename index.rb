@@ -1,6 +1,7 @@
 require 'curses'
 require_relative './Menus/main_menu'
 require_relative './Core/Colors/base'
+require_relative './Core/Colors/terrain'
 
 system('echo -e "\033]50;SetProfile=Terminal-RPG\a"')
 system('clear')
@@ -16,6 +17,7 @@ def setup_curses
   init_colors(Curses)
   init_menu_pairs(Curses)
   init_player_pairs(Curses)
+  init_terrain_pairs(Curses)
 end
 
 def new_window

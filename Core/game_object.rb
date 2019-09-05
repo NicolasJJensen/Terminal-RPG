@@ -14,8 +14,8 @@ class GameObject
     @old = pos
   end
 
-  def draw(win)
-    @animation.draw(win, @pos)
+  def draw(win, pos = Vector.new(:x => 0, :y => 0))
+    @animation.draw(win, @pos + pos)
   end
 
   def move(direction)
@@ -24,11 +24,11 @@ class GameObject
   end
 
   def width
-    @animation.current_sprite.width
+    @animation.width
   end
 
   def height
-    @animation.current_sprite.height
+    @animation.height
   end
 
   def collides?(other)
@@ -39,4 +39,6 @@ class GameObject
       @pos.y >= other.pos.y + other.height
     )
   end
+
+  def update; end
 end

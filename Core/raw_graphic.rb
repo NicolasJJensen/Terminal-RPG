@@ -10,7 +10,7 @@ class RawGraphic
 
   def initialize(graphic, color = 0, transparency = true)
     @transparency = transparency
-    @graphic = graphic.rstrip.reverse.chomp.reverse
+    @graphic = graphic.reverse.chomp.reverse
     @color = color
   end
 
@@ -27,7 +27,11 @@ class RawGraphic
       @graphic.split("\n").each.with_index do |line, row|
         line.chars.each.with_index do |char, col|
           win.setpos(pos.y + row, pos.x + col)
-          next if pos.x + col >= win.maxx || pos.y + row >= win.maxy || (@transparency && char == ' ')
+          next if pos.x + col >= win.maxx ||
+                  (pos.x + col).negative? ||
+                  pos.y + row >= win.maxy ||
+                  (pos.y + row).negative? ||
+                  (@transparency && char == ' ')
 
           win.addch(char)
         end

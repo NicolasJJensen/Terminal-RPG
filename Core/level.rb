@@ -2,28 +2,54 @@
 
 require 'curses'
 require_relative '../Menus/controls_menu'
+require_relative './Helpers/build_maze'
 require_relative './Colors/character'
+require_relative './Colors/terrain'
 require_relative './GameObjects/Player/player'
+require_relative './GameObjects/Terrain/grass'
 
 # Class containing logic and all information pertaining to a game level
 class Level
   attr_accessor :name
+
   def initialize(name)
+    @frame_rate = 30.0
+
+    wall = GameObject.new(RawGraphic.new(".*.\n*.*\n.*.", HEDGE), Vector.new(:x => 0, :y => 0))
+    @maze_width = 5
+    @maze_height = 5
+    @maze_cell_size = 40
+    @terrain = build_maze(@maze_width, @maze_height, wall, @maze_cell_size)
+
     @name = name
     @game_over = false
-    @player = Player.new(Vector.new(:x => 0, :y => 0))
+
+    @local_position = Vector.new(:x => 0, :y => 0)
+    @player = Player.new(Vector.new(:x => 4, :y => 4))
+    @player_width = @player.width
+    @player_height = @player.height
+
     @characters = []
     @attacks = []
-    @floor = []
-    @terrain = []
+
     @menu = GameMenu.new(CONTROLS_MENU, exit_level)
-    @frame_rate = 60.0
     @hud = RawGraphic.new('|' * (@player.health / 10), HEALTH_BAR)
     @hud_text = RawGraphic.new('HEALTH: ', HEALTH_TEXT)
   end
 
+  def init_floor
+    (@maze_width*@maze_cell_size/8).times.map do |x|
+      (@maze_width*@maze_cell_size/5).times.map do |y|
+        grass = Grass.new(Vector.new(:x => x*8, :y => y*5))
+        grass.animation.current_sprite_index = x + y/2 + rand(4)
+        grass
+      end
+    end.flatten
+  end
+
   def run(win)
     @win = win
+    @floor = init_floor
     @win.nodelay = true
 
     @start_time = Time.now
@@ -69,10 +95,29 @@ class Level
   end
 
   def draw_terrain
+    @floor.each do |tile|
+      draw_pos = tile.pos - @local_position + Vector.new(:x => 10, :y => 10)
+      next if draw_pos.x.negative? ||
+              draw_pos.y.negative? ||
+              draw_pos.x - 20 >= @win.maxx ||
+              draw_pos.y - 20 >= @win.maxy
+
+      tile.draw(@win, @local_position * -1)
+    end
+
+    @terrain.each do |tile|
+      draw_pos = tile.pos - @local_position + Vector.new(:x => 10, :y => 10)
+      next if draw_pos.x.negative? ||
+              draw_pos.y.negative? ||
+              draw_pos.x - 20 >= @win.maxx ||
+              draw_pos.y - 20 >= @win.maxy
+
+      tile.draw(@win, @local_position * -1)
+    end
   end
 
   def draw_characters
-    @player.draw(@win)
+    @player.draw(@win, @local_position * -1)
   end
 
   def draw_attack
@@ -87,6 +132,15 @@ class Level
     update_characters
     update_attacks
     update_hud
+    update_local_pos
+  end
+
+  def update_local_pos
+    pos = @player.pos - Vector.new(:x => @win.maxx/2, :y => @win.maxy/2) - Vector.new(:x => @player_width/2, :y => @player_height/2)
+    @local_position = Vector.new(
+      :x => pos.x.clamp(0, @maze_width * @maze_cell_size - @win.maxx),
+      :y => pos.y.clamp(0, @maze_height * @maze_cell_size - @win.maxy)
+    )
   end
 
   def update_hud
@@ -118,6 +172,17 @@ class Level
   end
 
   def terrain_collision
+    @terrain.each do |wall|
+      draw_pos = wall.pos - @local_position + Vector.new(:x => 10, :y => 10)
+      next if draw_pos.x.negative? ||
+              draw_pos.y.negative? ||
+              draw_pos.x - 20 >= @win.maxx ||
+              draw_pos.y - 20 >= @win.maxy ||
+              !@player.collides?(wall)
+
+      @player.pos = @player.old
+      break
+    end
   end
 
   def character_collision
