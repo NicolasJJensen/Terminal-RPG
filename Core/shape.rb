@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative './Helpers/paint_color'
+
 # Abstract Class that contained information for each shape class inheriting from it
 class Shape
   attr_accessor :char, :color
@@ -68,8 +70,10 @@ class Circle < Shape
       x_pos = ((x * @radius) + pos.x).round
       y_pos = ((y * @radius) + pos.y).round
       if x_pos < win.maxx && y_pos < win.maxy && x_pos >= 0 && y_pos >= 0
-        win.setpos(y_pos, x_pos)
-        win.addch(@char)
+        paint(win, @color) do
+          win.setpos(y_pos, x_pos)
+          win.addch(@char)
+        end
       end
       counter += 1 / @accuracy.to_f
     end

@@ -41,6 +41,11 @@ class Animation
       @fps == other.fps
   end
 
+  def updates_till_complete
+    update_amount = (@fps / @@frame_rate.to_f)
+    @sprites.length / update_amount
+  end
+
   class << self
     def get_frame_rate
       @@frame_rate

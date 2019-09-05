@@ -12,7 +12,7 @@ require_relative './GameObjects/Player/player'
 class Level
   attr_accessor :name
 
-  def initialize(name, wall, floor, width, height)
+  def initialize(name, wall, floor, width, height, player)
     @frame_rate = 30.0
     @maze_width = width
     @maze_height = height
@@ -23,13 +23,15 @@ class Level
     @name = name
     @game_over = false
 
-    @local_position = Vector.new(:x => 0, :y => 0)
-    @player = Player.new(Vector.new(:x => 4, :y => 4))
-    @player_width = @player.width
-    @player_height = @player.height
-
     @characters = []
     @attacks = []
+    @temp_objects = []
+
+    @local_position = Vector.new(:x => 0, :y => 0)
+    @player = player
+    @player.creation_proc = creation_proc
+    @player_width = @player.width
+    @player_height = @player.height
 
     @menu = GameMenu.new(CONTROLS_MENU, exit_level)
   end
@@ -39,7 +41,7 @@ class Level
       (@maze_width*@maze_cell_size/5).times.map do |y|
         floor = @floor_type.copy
         floor.pos = Vector.new(:x => x*8, :y => y*5)
-        floor.animation.current_sprite_index = x + y + rand(4)
+        floor.animation.current_sprite_index = x + y + rand(5)
         floor
       end
     end.flatten
@@ -76,6 +78,20 @@ class Level
     end
   end
 
+  def clear_temp_objects
+    @temp_objects = @temp_objects.map do |object|
+      if object.finish
+        nil
+      else
+        object
+      end
+    end.compact
+  end
+
+  def creation_proc
+    proc { |object| @temp_objects << object }
+  end
+
   def frame_rate_logic
     @finish_time = Time.now
     delta_time = @finish_time - @start_time
@@ -86,6 +102,8 @@ class Level
 
   def draw
     @win.erase
+    draw_floor
+    draw_temp_objects
     draw_terrain
     draw_characters
     draw_attack
@@ -93,7 +111,13 @@ class Level
     @win.refresh
   end
 
-  def draw_terrain
+  def draw_temp_objects
+    @temp_objects.each do |object|
+      object.draw(@win, @local_position * -1)
+    end
+  end
+
+  def draw_floor
     @floor.each do |tile|
       draw_pos = tile.pos - @local_position + Vector.new(:x => 10, :y => 10)
       next if draw_pos.x.negative? ||
@@ -103,7 +127,9 @@ class Level
 
       tile.draw(@win, @local_position * -1)
     end
+  end
 
+  def draw_terrain
     @terrain.each do |tile|
       draw_pos = tile.pos - @local_position + Vector.new(:x => 10, :y => 10)
       next if draw_pos.x.negative? ||
@@ -130,6 +156,12 @@ class Level
     update_characters
     update_attacks
     update_local_pos
+    clear_temp_objects
+    update_temp_objects
+  end
+
+  def update_temp_objects
+    @temp_objects.each(&:update)
   end
 
   def update_local_pos
