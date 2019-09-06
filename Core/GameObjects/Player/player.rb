@@ -59,7 +59,7 @@ class Player < Character
   # Changes the animation displayed based on the 
   # velocity of the character
   def update_animation
-    case @velocity
+    case @velocity.normalized
     when Vector.new(:x => 0, :y => 1)
       @animation = PLAYER_DOWN
     when Vector.new(:x => 0, :y => -1)

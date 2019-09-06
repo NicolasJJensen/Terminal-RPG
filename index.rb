@@ -6,8 +6,7 @@ require_relative './Core/Colors/terrain'
 # this line changed the current profile in iTerm2 to the one used for the game
 system('echo -e "\033]50;SetProfile=Terminal-RPG\a"')
 system('clear')
-system('clear')
-puts 'Press enter when ready?'
+puts "Maximize your screen to prepare\nThen press enter when ready!"
 gets
 
 # this sets up curses and all the colors

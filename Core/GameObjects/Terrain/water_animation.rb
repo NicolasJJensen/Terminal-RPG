@@ -433,7 +433,7 @@ WATER_ANIMATION = Animation.new(
     water_sprite19,
     water_sprite20,
     water_sprite21,
-    water_sprite22,
+    water_sprite22
   ],
   [
     Vector.new(:x => 0, :y => 0),

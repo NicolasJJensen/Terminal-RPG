@@ -27,7 +27,7 @@ PLAYER_DOWN = Animation.new(
     Vector.new(:x => 0, :y => 0),
     Vector.new(:x => 0, :y => 0)
   ],
-  5
+  10
 )
 
 PLAYER_UP = Animation.new(
@@ -43,7 +43,7 @@ PLAYER_UP = Animation.new(
     Vector.new(:x => 0, :y => 0),
     Vector.new(:x => 0, :y => 0)
   ],
-  5
+  10
 )
 
 PLAYER_LEFT = Animation.new(
@@ -55,7 +55,7 @@ PLAYER_LEFT = Animation.new(
     Vector.new(:x => 0, :y => 0),
     Vector.new(:x => 0, :y => 0)
   ],
-  5
+  10
 )
 
 PLAYER_RIGHT = Animation.new(
@@ -67,5 +67,5 @@ PLAYER_RIGHT = Animation.new(
     Vector.new(:x => 0, :y => 0),
     Vector.new(:x => 0, :y => 0)
   ],
-  5
+  10
 )

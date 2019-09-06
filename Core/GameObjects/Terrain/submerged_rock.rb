@@ -5,7 +5,7 @@ require_relative '../../raw_graphic'
 require_relative '../../Colors/terrain'
 
 # Initaliaze animation frame rate so that
-# rendering works no matter which order 
+# rendering works no matter which order
 # sprites are initialized
 
 Animation.set_frame_rate(30.0)

@@ -5,6 +5,8 @@ require 'artii'
 require_relative '../Menus/controls_menu'
 require_relative './Helpers/build_maze'
 require_relative './Helpers/hud'
+require_relative './Helpers/paint_color'
+require_relative './Colors/menu'
 require_relative './Colors/character'
 require_relative './Colors/terrain'
 require_relative './GameObjects/Player/player'
@@ -110,13 +112,13 @@ class Level
   def input_logic
     case @win.getch
     when ControlMenu.get_controls[0][:control] # UP
-      @player.move(Vector.new(:x => 0, :y => -1))
+      @player.move(Vector.new(:x => 0, :y => -2))
     when ControlMenu.get_controls[1][:control] # DOWN
-      @player.move(Vector.new(:x => 0, :y => 1))
+      @player.move(Vector.new(:x => 0, :y => 2))
     when ControlMenu.get_controls[2][:control] # LEFT
-      @player.move(Vector.new(:x => -1, :y => 0))
+      @player.move(Vector.new(:x => -2, :y => 0))
     when ControlMenu.get_controls[3][:control] # RIGHT
-      @player.move(Vector.new(:x => 1, :y => 0))
+      @player.move(Vector.new(:x => 2, :y => 0))
     when 'p'
       @menu.run(@win)
     end
@@ -294,11 +296,13 @@ class Level
   # as of now I have 0 clue on why it isn't working
   def display_win
     @win.clear
-    str = Artii::Base.new.asciify("YOU WON")
-    str.split("\n").each.with_index do |line, i|
-      @win.setpos(i, 0)
-      line.chars.each do |char|
-        @win.addch(char)
+    paint(@win, TEXT_SUCCESS) do
+      str = Artii::Base.new.asciify("YOU WON")
+      str.split("\n").each.with_index do |line, i|
+        line.chars.each.with_index do |char, j|
+          @win.setpos(@win.maxy/2 + i, @win.maxx/2 + j - str.split("\n")[0].length/2)
+          @win.addch(char) unless char == ' '
+        end
       end
     end
     @win.refresh

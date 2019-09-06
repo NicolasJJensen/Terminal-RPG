@@ -119,7 +119,7 @@ class NSidedShape < Shape
     @lines = init_lines
   end
 
-  # this is to update the angle and re-get the lines 
+  # this is to update the angle and re-get the lines
   # if angle is changed the lines aren't updated because the shape
   # is only initialized in the initialize function
   def update_angle(angle)
