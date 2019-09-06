@@ -2,7 +2,7 @@
 
 require 'test/unit'
 require_relative '../Core/vector'
-require_relative '../Core/graphic'
+require_relative '../Core/raw_graphic'
 require_relative '../Core/sprite'
 require_relative '../Core/animation'
 
@@ -15,7 +15,7 @@ class GraphicTest < Test::Unit::TestCase
 *  *
 ****
 "
-    @graphic = Graphic.new(graphic, 7)
+    @graphic = RawGraphic.new(graphic, 7)
     @sprite = Sprite.new([@graphic], [Vector.new(:x => 2, :y => 3)])
     @animation = Animation.new([@sprite], [Vector.new(:x => 2, :y => 3)], 60)
   end

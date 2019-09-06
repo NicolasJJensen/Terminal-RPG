@@ -2,7 +2,7 @@
 
 require 'test/unit'
 require_relative '../Core/vector'
-require_relative '../Core/graphic'
+require_relative '../Core/raw_graphic'
 require_relative '../Core/sprite'
 
 # Tests for the Game class
@@ -14,12 +14,12 @@ class SpriteTest < Test::Unit::TestCase
 *  *
 ****
 "
-    @graphic = Graphic.new(graphic, 7)
+    @graphic = RawGraphic.new(graphic, 7)
     @sprite = Sprite.new([@graphic], [Vector.new(:x => 2, :y => 3)])
   end
 
   def test_graphic_initalized
-    assert_equal(@sprite.graphics[0].graphic, "****\n*  *\n*  *\n****")
+    assert_equal(@sprite.graphics[0].graphic, "****\n*  *\n*  *\n****\n")
   end
 
   def test_width

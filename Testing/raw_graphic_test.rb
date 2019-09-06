@@ -20,7 +20,7 @@ class RawGraphicTest < Test::Unit::TestCase
   end
 
   def test_graphic_initalized
-    assert_equal(@graphic.graphic, graphic)
+    assert_equal(@graphic.graphic, "****\n*  *\n*  *\n****\n")
   end
 
   def test_width

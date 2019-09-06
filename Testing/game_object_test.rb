@@ -2,7 +2,7 @@
 
 require 'test/unit'
 require_relative '../Core/vector'
-require_relative '../Core/graphic'
+require_relative '../Core/raw_graphic'
 require_relative '../Core/sprite'
 require_relative '../Core/animation'
 require_relative '../Core/game_object'
@@ -16,7 +16,7 @@ class GameObjectTest < Test::Unit::TestCase
 *  *
 ****
 "
-    @graphic = Graphic.new(graphic, 7)
+    @graphic = RawGraphic.new(graphic, 7)
     @sprite = Sprite.new([@graphic], [Vector.new(:x => 2, :y => 3)])
     @animation = Animation.new([@sprite], [Vector.new(:x => 2, :y => 3)], 60)
     @game_object = GameObject.new(@animation, Vector.new(:x => 2, :y => 3))
@@ -37,11 +37,11 @@ class GameObjectTest < Test::Unit::TestCase
   end
 
   def test_width
-    assert_equal(@game_object.width, 6)
+    assert_equal(@game_object.width, 8)
   end
 
   def test_height
-    assert_equal(@game_object.height, 7)
+    assert_equal(@game_object.height, 10)
   end
 
   def test_collision_true
@@ -51,7 +51,7 @@ class GameObjectTest < Test::Unit::TestCase
   end
 
   def test_collision_false
-    game_object2 = GameObject.new(@animation, Vector.new(:x => 8, :y => 10))
+    game_object2 = GameObject.new(@animation, Vector.new(:x => 15, :y => 15))
     assert(!@game_object.collides?(game_object2))
     assert(!game_object2.collides?(@game_object))
   end
