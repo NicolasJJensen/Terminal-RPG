@@ -21,11 +21,12 @@ class Level
   # the width and height of the maze
   # and the player instance that will be playing the level
   def initialize(name, wall, floor, width, height, player)
+    size = ARGV[0].to_i if ARGV.length.positive? && ARGV[0].to_i >= 5
 
     # setup for the maze
     @frame_rate = 30.0
-    @maze_width = width
-    @maze_height = height
+    @maze_width = size || width
+    @maze_height = size || height
     @maze_cell_size = 40
 
     # using the helper function to generate the terrain for the maze
