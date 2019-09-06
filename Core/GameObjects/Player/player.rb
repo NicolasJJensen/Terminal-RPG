@@ -11,7 +11,7 @@ class Player < Character
 
   # Class is initialized with several nil values because they are not always used
   # and it was a feature that was added later, so default values stopped it from crashing
-  def initialize(pos, effect = nil, e_cooldown = nil, creation_proc = nil)
+  def initialize(pos, effect = nil, effect_sound = nil, e_cooldown = nil, creation_proc = nil)
     # Super to initialize the player with a default animation and health etc
     super(PLAYER_DOWN, pos, 80, nil)
     @velocity = Vector.new(:x => 0, :y => 0)
@@ -20,6 +20,7 @@ class Player < Character
     @e_cooldown = e_cooldown
     @e_current_cd = 0
     @creation_proc = creation_proc
+    @effect_sound = effect_sound
   end
 
   # Updates different attributes of the player each frame of the game
@@ -49,6 +50,7 @@ class Player < Character
     # it doesn't exist or it's on cooldown
     return unless @effect && @e_cooldown && creation_proc && @e_current_cd.negative?
 
+    @effect_sound.call() if @effect_sound
     # Resets the cooldown, and creates a copy of the object to pass through
     @e_current_cd = @e_cooldown
     new_effect = @effect.copy
