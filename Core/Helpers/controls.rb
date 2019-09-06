@@ -2,6 +2,8 @@
 
 require 'curses'
 
+# Config file for the default controls
+
 CONTROLS = [
   { name: 'Up', control: Curses::KEY_UP },
   { name: 'Down', control: Curses::KEY_DOWN },

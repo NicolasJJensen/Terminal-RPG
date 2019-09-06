@@ -4,6 +4,8 @@ require_relative '../../raw_graphic'
 require_relative '../../shape'
 require_relative '../../Colors/character'
 
+# a list of strings for the player moving down animation
+
 hair = "
      ****
    ********
@@ -126,6 +128,9 @@ border_forward = "
       *   *
        ***
 "
+
+# Turn all the strings into RawGraphics
+# so they can be drawing easily with color
 
 HAIR = RawGraphic.new(hair, PLAYER_HAIR)
 HEAD = RawGraphic.new(head, PLAYER_SKIN)

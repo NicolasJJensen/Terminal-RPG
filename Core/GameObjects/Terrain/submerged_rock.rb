@@ -4,10 +4,17 @@ require_relative '../../vector'
 require_relative '../../raw_graphic'
 require_relative '../../Colors/terrain'
 
+# Initaliaze animation frame rate so that
+# rendering works no matter which order 
+# sprites are initialized
+
 Animation.set_frame_rate(30.0)
 
+# A list of sprites for the rock
+# and the water splash in the animation
+
 rock = "
-   
+
    **
   ****
  *****
@@ -50,6 +57,9 @@ water_splash4 = "
 
  V^
 "
+
+# Setting up the different sprites for each
+# frame of the animation
 
 submerged_rock1 = Sprite.new(
   [

@@ -1,13 +1,17 @@
 # frozen_string_literal: true
 
+# Maze class that can create a grid maze
+# with a width and height of your choice
 class Maze
   attr_accessor :grid
 
+  # initializes the Maze with an empty array of nil values
   def initialize(width, height)
     @grid = Array.new(height) { Array.new(width) }
     create_maze(0, 0, 3)
   end
 
+  # recursize backtracking function to create the maze
   def create_maze(row, col, direction)
     curr_cell = Cell.new
     @grid[row][col] = curr_cell
@@ -57,6 +61,7 @@ class Maze
   end
 end
 
+# Cell to keep track of which directions of each cell are "open"
 class Cell
   attr_accessor :walls
 

@@ -3,6 +3,7 @@
 require_relative '../game_object'
 
 # Class for a weapon which can launch an attack
+# (Unimplemented)
 class Weapon < GameObject
   def initialize(animation, pos)
     super(animation, pos)

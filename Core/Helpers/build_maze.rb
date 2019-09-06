@@ -1,6 +1,11 @@
 require_relative '../maze'
 require_relative '../vector'
 
+# This is a helper function that 
+# uses the maze class to create and maze
+# and then generates the terrain for said maze
+# with the type of wall specified
+
 def build_maze(x, y, wall, cell_size)
   terrain = []
   maze = Maze.new(x, y)
@@ -34,5 +39,6 @@ def build_maze(x, y, wall, cell_size)
     end
   end
 
+  # returns the terrain that was generated
   terrain
 end

@@ -4,6 +4,8 @@ require_relative '../raw_graphic'
 require_relative '../sprite'
 require_relative '../Colors/character'
 
+# This is setup for the health bar sprite
+
 HP_graphic = RawGraphic.new(
   "
 | | |-|     
@@ -62,14 +64,21 @@ HP_empty_block = Sprite.new(
   ]
 )
 
+# helper function that takes a percentage
+# and returns a sprite of the hud
 def get_hud(percentage)
+  # creates blocks for the amount of health
   hp_block_group = (percentage * 10).to_i.times.map do
     HP_block
   end
+
+  # creates blocks for the missing health
   hp_empty_group = (10 - percentage * 10).to_i.times.map do
     HP_empty_block
   end
 
+  # initializes the hud sprite with correct graphics
+  # in position
   Sprite.new(
     [
       HP_graphic,

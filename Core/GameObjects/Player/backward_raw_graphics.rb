@@ -4,6 +4,8 @@ require_relative '../../raw_graphic'
 require_relative '../../shape'
 require_relative '../../Colors/character'
 
+# A bunch fo graphics for when the character is facing down
+
 hair = "
      ****
    ********
@@ -112,6 +114,10 @@ border_backward = "
       *   *
        ***
 "
+
+# Here we compile all the graphics together into a RawGraphic
+# We aso add a color from an external file with all the color
+# attributes for the player character
 
 HAIR = RawGraphic.new(hair, PLAYER_HAIR)
 HEAD = RawGraphic.new(head, PLAYER_SKIN)

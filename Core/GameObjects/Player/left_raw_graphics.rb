@@ -4,6 +4,8 @@ require_relative '../../raw_graphic'
 require_relative '../../shape'
 require_relative '../../Colors/character'
 
+# Once again a list of strings for the graphics
+
 hair = "
    ****
  ********
@@ -66,6 +68,9 @@ border_idle = "
    *    *
     ****
 "
+
+# They were split up here because it made it easier to keep track of
+# which graphics for which animation has been done
 
 HAIR = RawGraphic.new(hair, PLAYER_HAIR)
 HEAD = RawGraphic.new(head, PLAYER_SKIN)

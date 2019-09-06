@@ -4,7 +4,13 @@ require_relative '../../vector'
 require_relative '../../raw_graphic'
 require_relative '../../Colors/terrain'
 
+# initialize the frame rate for animations
+
 Animation.set_frame_rate(30.0)
+
+# Set up the sprites for the water
+# (Once again should be done similar to the player sprites
+# but if it aint broke...)
 
 water_sprite1 = Sprite.new(
   [
@@ -401,6 +407,8 @@ water_sprite22 = Sprite.new(
     Vector.new(:x => 0, :y => 5)
   ]
 )
+
+# Setting up the water animation with the sprites
 
 WATER_ANIMATION = Animation.new(
   [

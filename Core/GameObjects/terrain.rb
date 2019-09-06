@@ -2,10 +2,13 @@
 
 require_relative '../game_object'
 
-# Class for an attack which is treated like a projectile
+# Class all terrain objects
 class Terrain < GameObject
   attr_accessor :damage
 
+  # damage is for things such as spikes
+  # speed modifier is multiplier to speed
+  # (Both unimplemented)
   def initialize(animation, pos, damage, speed_modifier)
     super(animation, pos)
     @damage = damage

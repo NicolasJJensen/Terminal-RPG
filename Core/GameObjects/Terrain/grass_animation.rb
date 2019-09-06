@@ -4,7 +4,14 @@ require_relative '../../vector'
 require_relative '../../raw_graphic'
 require_relative '../../Colors/terrain'
 
+# Sets the frame rate in the animation to make sure it's
+# initialized properly
+
 Animation.set_frame_rate(30.0)
+
+# Sets the sprites for the grass animation
+# (I should have created these in the same way as the other animations
+# but this works so...)
 
 grass_sprite1 = Sprite.new(
   [
@@ -95,6 +102,8 @@ grass_sprite5 = Sprite.new(
     Vector.new(:x => 0, :y => 5)
   ]
 )
+
+# Puts all the animations together in a single variable
 
 GRASS_ANIMATION = Animation.new(
   [

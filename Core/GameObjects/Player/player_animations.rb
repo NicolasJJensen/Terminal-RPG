@@ -6,7 +6,13 @@ require_relative './backward_sprites'
 require_relative './left_sprites'
 require_relative './right_sprites'
 
+# Here we set they frame rate for the animation class
+# This makes sure it is properly initialized when the animation
+# is drawn and created
+
 Animation.set_frame_rate(30.0)
+
+# The 4 different animations for player movement
 
 PLAYER_DOWN = Animation.new(
   [

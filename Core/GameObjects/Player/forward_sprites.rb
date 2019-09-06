@@ -4,6 +4,8 @@ require_relative '../../sprite'
 require_relative '../../vector'
 require_relative './forward_raw_graphics'
 
+# Once again the player head is created first
+
 PLAYER_HEAD = Sprite.new(
   [
     HEAD,
@@ -16,6 +18,8 @@ PLAYER_HEAD = Sprite.new(
     Vector.new(x: 0, y: 7)
   ]
 )
+
+# All the completed sprites are created
 
 PLAYER_FORWARD1 = Sprite.new(
   [

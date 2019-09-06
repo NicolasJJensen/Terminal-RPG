@@ -4,6 +4,8 @@ require_relative '../../sprite'
 require_relative '../../vector'
 require_relative './left_raw_graphics'
 
+# Set's up the head to be re-used
+
 PLAYER_HEAD = Sprite.new(
   [
     HEAD.flip,
@@ -16,6 +18,8 @@ PLAYER_HEAD = Sprite.new(
     Vector.new(x: 7, y: 5)
   ]
 )
+
+# Creates the other sprites for the animation
 
 PLAYER_RIGHT1 = Sprite.new(
   [
